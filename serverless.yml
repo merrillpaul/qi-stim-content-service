@@ -1,0 +1,46 @@
+
+
+service: qiStimContentService
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  role: arn:aws:iam::368191987606:role/Stim-S3-Lambda
+  region: us-east-2
+
+
+functions:
+  checkStimVersion:
+    handler: handler.checkVersion
+
+    events:
+      - http:
+          path: /stim/check_version
+          method: get
+
+  updateVersionJson:
+    handler: handler.updateVersionJson
+
+    events:
+      - http:
+          path: /stim/update_version
+          method: get
+package:
+  # exclude:
+    # - node_modules/@types/**/*
+  include:
+    - utils/**/*
+    #- node_modules/**/*
+  # excludeDevDependencies: false
+
+plugins:
+ - serverless-webpack
+ - serverless-offline
+
+custom:
+  webpack:
+    includeModules: true # enable auto-packing of external modules
