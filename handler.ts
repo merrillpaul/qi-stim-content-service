@@ -18,18 +18,25 @@ export const checkVersion: Handler = (event: any, context: Context, callback: Ca
     const previousTag = event.queryStringParameters.currentEtag;
     (async () => {
       try {
-      const hasNew = await S3Opts.hasNew(bucketName, `${stimName}.tar`, previousTag);
-      response.statusCode = 200;
-      response.body =  JSON.stringify({hasNew: hasNew});
+        const hasNew = await S3Opts.hasNew(bucketName, `${stimName}.tar`, previousTag);
+        response.statusCode = 200;
+        response.body =  JSON.stringify({hasNew: hasNew});
+        
       } catch(e) {
         response.statusCode = 500;
         response.body =  JSON.stringify({message: "error in accessing s3 object"});
       }
+      response.headers = { 
+        "Access-Control-Allow-Origin": "*" 
+      };
       callback(null, response);
     })();
   } else {
     response.statusCode = 500;
     response.body =  JSON.stringify({message: "no query params found"});
+    response.headers = { 
+      "Access-Control-Allow-Origin": "*" 
+    }
     callback(null, response);
   }  
   
@@ -45,9 +52,13 @@ export const updateVersionJson: Handler = (event: any, context: Context, callbac
   (async () => {    
     try {
       await S3Opts.createETagJson(bucketName);
-      callback(null, { statusCode: 200, body: JSON.stringify({status: "ok"}) });
+      callback(null, { statusCode: 200, headers : { 
+        "Access-Control-Allow-Origin": "*" 
+      }, body: JSON.stringify({status: "ok"}) });
     } catch(e) {
-      callback(null, { statusCode: 500, body: JSON.stringify({message: "error in creating etag json"}) });
+      callback(null, { statusCode: 500, headers : { 
+        "Access-Control-Allow-Origin": "*" 
+      }, body: JSON.stringify({message: "error in creating etag json"}) });
     }
   })();
  

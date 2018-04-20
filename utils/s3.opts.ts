@@ -21,7 +21,6 @@ export class S3Opts {
                     rej(err);
                     return;
                 }
-
                 res(JSON.parse(data.ETag) !== providedEtag); // ETAGs are json strings
             });
         });
