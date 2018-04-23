@@ -18,13 +18,13 @@ export const checkVersion: Handler = (event: any, context: Context, callback: Ca
     const previousTag = event.queryStringParameters.currentEtag;
     (async () => {
       try {
-        const hasNew = await S3Opts.hasNew(bucketName, `${stimName}.tar`, previousTag);
+        const res = await S3Opts.hasNew(bucketName, `${stimName}.tar`, previousTag);
         response.statusCode = 200;
-        response.body =  JSON.stringify({hasNew: hasNew});
+        response.body =  JSON.stringify(res);
         
       } catch(e) {
-        response.statusCode = 500;
-        response.body =  JSON.stringify({message: "error in accessing s3 object"});
+        response.statusCode = e.statusCode || 500;
+        response.body =  JSON.stringify({error: e, message: "error in accessing s3 object"});
       }
       response.headers = { 
         "Access-Control-Allow-Origin": "*" 

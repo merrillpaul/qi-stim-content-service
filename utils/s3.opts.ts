@@ -8,20 +8,22 @@ export class S3Opts {
      * @param objectKey 
      * @param providedEtag 
      */
-    public static async hasNew(bucketName: string, objectKey: string, providedEtag: string): Promise<boolean> {
+    public static async hasNew(bucketName: string, objectKey: string, providedEtag: string): Promise<any> {
         console.log(`Checking ETag for stim bucket ${bucketName} for ${objectKey} and ${providedEtag} `);
-        return new Promise<boolean>((res, rej) => {
+        return new Promise<any>((res, rej) => {
            
             const s3 = new S3();
+        
             s3.headObject({
                 Bucket: bucketName,
                 Key: objectKey
             }, (err: AWSError, data: S3.Types.HeadObjectOutput) => {
                 if(err) {
+                    console.log('Error in hasNew', JSON.stringify(err, null, 5));
                     rej(err);
                     return;
                 }
-                res(JSON.parse(data.ETag) !== providedEtag); // ETAGs are json strings
+                res({ hasNew: (JSON.parse(data.ETag) !== providedEtag), etag: JSON.parse(data.ETag)}); // ETAGs are json strings
             });
         });
     }
