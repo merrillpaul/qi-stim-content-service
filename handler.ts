@@ -10,7 +10,7 @@ import { S3Opts } from './utils/s3.opts';
  */
 export const checkVersion: Handler = (event: any, context: Context, callback: Callback) => {
   console.log(`Inside Check Version`, JSON.stringify(event, null, 5));
-  let bucketName = 'study-ionic-stims';
+  let bucketName = 'qi-ionic-prototype-example1';
   const response: any = {};
   if (event.queryStringParameters) {
     bucketName = event.queryStringParameters.bucket || bucketName;
@@ -45,7 +45,7 @@ export const checkVersion: Handler = (event: any, context: Context, callback: Ca
 
 export const updateVersionJson: Handler = (event: any, context: Context, callback: Callback) => {
   console.log(`Inside Update version json`, JSON.stringify(event, null, 5));
-  let bucketName = 'study-ionic-stims';
+  let bucketName = 'qi-ionic-prototype-example1';
   if (event.queryStringParameters) {
     bucketName = event.queryStringParameters.bucket || bucketName;
   } 

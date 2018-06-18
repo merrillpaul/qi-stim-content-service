@@ -9,7 +9,7 @@ service: qiStimContentService
 provider:
   name: aws
   runtime: nodejs8.10
-  role: arn:aws:iam::368191987606:role/Stim-S3-Lambda
+  role: arn:aws:iam::428785008043:role/QI-GitHUB-PROTO-LAMBDA
   region: us-east-2
 
 
